@@ -1,4 +1,5 @@
 //Da xoa
+//Hai da them 
 #include "controller.h"
 #include <QDebug>
 
