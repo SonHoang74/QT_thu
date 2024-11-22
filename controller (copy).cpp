@@ -1,5 +1,4 @@
-//Da xoa
-//Hai da them 
+//Da xoa nhieu lan
 #include "controller.h"
 #include <QDebug>
 
@@ -22,12 +21,10 @@ float Controller::inert(float& out, float inp, float K, float T, float dt) {
     out += dt * (inp * K - out) / T;
     return out;
 }
-
 float Controller::rdiff(float& out, float dinp, float Td, float Tf, float dt) {
     out = out * (1 - dt / Tf) + dinp * Td / Tf;
     return out;
 }
-
 float Controller::intgr(float& out, float inp, float T, float dt) {
     out += dt * inp / T;
     return out;
@@ -41,11 +38,11 @@ float Controller::update1PID(float target, float cur, float deltaTime) {
     err = target - cur;
     err *= pgain;
     fIntgr = intgr(fIntgr, err, igain, deltaTime);
-    fIntgr = saturate(fIntgr, -400.0, 400.0);
+    fIntgr = saturate(fIntgr, -400, 400);
     frdiff = rdiff(frdiff, (err - last_1PID), dgain, fgain, deltaTime);
     pid = inert(pid, (err + fIntgr + frdiff), 1.0, 0.035, deltaTime);
-    last_1PID = err;
-    pid = saturate(pid, -400.0, 400.0);
+    err = target - cur;
+    pid = saturate(pid, -400, 400);
     return pid;
 }
 float Controller::update2PID(float target, float cur, float deltaTime) {

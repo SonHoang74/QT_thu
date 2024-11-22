@@ -1,5 +1,4 @@
-//Da xoa OK
-//Thay Sua
+
 #include "mythread.h"
 #include <inttypes.h>
 #include <stdio.h>
@@ -55,22 +54,22 @@ void MyThread::run()
                     }
                     case 1:  // 1 PID Control
                     {
-                        // Block scope for case 1
                         Controller PID_1 = Controller(pDlg->Kp, pDlg->Ti, pDlg->Td, pDlg->Tf);
                         PID_1out = PID_1.update1PID(pDlg->Des_Ang, mBfRc[0], mBfRc[4] * 0.001);
                         int pid_output = static_cast<int>(PID_1out);
-                        uint32_t pwmValue =  ((pDlg->PWM_1PID) + pid_output) | (((pDlg->PWM_1PID) - pid_output) << 16);
+                        uint32_t pwmValue =  ((pDlg->PWM_1PID)+pid_output) | (((pDlg->PWM_1PID) - pid_output) << 16);
                         memcpy(mBfTr, &pwmValue, sizeof(pwmValue));
                         qDebug() << "1 PID Control - PID_out: " << pid_output;
                         break;
                     }
-                    case 2:  // 2 PID Control
+                    case 2:  
+// 2 PID Control
                     {
                         // Block scope for case 2
                         Controller Acc_PID = Controller(pDlg->Kp_ang, pDlg->Ki_ang, pDlg->Kd_ang, 0);
                         Controller Vel_PID = Controller(pDlg->Kp_vel, pDlg->Ki_vel, pDlg->Kd_vel, 0);
                         Vel_Des = Acc_PID.update2PID(pDlg->Des_Ang_2, mBfRc[0], mBfRc[4] * 0.001);
-                        PID_PWM = Vel_PID.update2PID(Vel_Des, mBfRc[1], mBfRc[4] * 0.001);
+                        PID_PWM = Vel_PID.update2PID(Vel_Des, mBfRc[1], mBfRc[4]*0.001);
                         int pid_out = static_cast<int>(PID_PWM);
 
                         uint32_t pwmValue =  ((pDlg->PWM_2PID) + pid_out) | (((pDlg->PWM_2PID) - pid_out) << 16);
