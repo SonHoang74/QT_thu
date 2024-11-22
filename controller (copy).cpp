@@ -1,5 +1,4 @@
-//Da kiem tra. OK
-//Da kiem tra Lan 2
+//Da xoa
 #include "controller.h"
 #include <QDebug>
 
